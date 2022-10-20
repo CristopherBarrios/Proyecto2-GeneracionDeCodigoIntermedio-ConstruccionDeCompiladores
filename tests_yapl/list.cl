@@ -132,6 +132,7 @@ class Main inherits IO {
 	       mylist <- mylist.tail();
 	    }
 	 pool;
+    (new Main).main();
       }
    };
 

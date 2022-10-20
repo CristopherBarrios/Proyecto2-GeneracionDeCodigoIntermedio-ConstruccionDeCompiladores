@@ -19,6 +19,7 @@ class Main inherits IO {
    };
 
    main() : Object {
+	{
    (* Since we didn't bother to inherit from the A2I class, we have
 	to have an object of type A2I in order to access the
 	methods of that class. *)
@@ -42,5 +43,8 @@ class Main inherits IO {
 	   )
         pool
      )
+	(new Main).main();
+	}
+
    };
 };

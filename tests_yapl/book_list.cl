@@ -112,7 +112,7 @@ Class Main {
 
     books : BookList;
 
-    main() : Object {
+    main() : Object {{
         (let a_book : Book <-
             (new Book).initBook("Compilers, Principles, Techniques, and Tools",
                                 "Aho, Sethi, and Ullman")
@@ -128,5 +128,6 @@ Class Main {
                 }
             )  -- end let an_article
         )  -- end let a_book
-    };
+    (new Main).main();
+    }};
 };

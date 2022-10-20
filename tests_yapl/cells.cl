@@ -92,6 +92,7 @@ class Main {
                 pool
             );
             self;
+        (new Main).main();
         }
     };
 };

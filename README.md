@@ -12,5 +12,7 @@ Proyecto 2 compiladores
 ## UI Ideas
  - https://www.w3schools.com/code/tryit.asp?filename=G68VMFWS12UH
 
- # Archivos
+ # Comandos
+ -  pip install -r requirements.txt
+ -  antlr -Dlanguage=Python3 -visitor YAPL.g4
  

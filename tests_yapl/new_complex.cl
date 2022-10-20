@@ -1,5 +1,5 @@
 class Main inherits IO {
-    main() : SELF_TYPE {
+    main() : SELF_TYPE {{
 	(let c : Complex <- (new Complex).init(1, 1) in
 	    {
 	        -- trivially equal (see CoolAid)
@@ -14,7 +14,8 @@ class Main inherits IO {
 	        fi;
 	    }
 	)
-    };
+	(new Main).main();
+	}};
 };
 
 class Complex inherits IO {

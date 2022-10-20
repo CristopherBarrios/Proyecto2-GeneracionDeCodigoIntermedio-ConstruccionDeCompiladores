@@ -97,6 +97,7 @@ class Main inherits IO {
 	 (new C).out_c();
 	 (new D).out_d();
 	 out_string("Done.\n");
+   (new Main).main();
       }
    };
 

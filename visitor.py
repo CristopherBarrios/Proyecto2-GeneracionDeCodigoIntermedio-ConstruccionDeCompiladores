@@ -103,6 +103,33 @@ class MyYAPLVisitor(YAPLVisitor):
             if "main" not in contador:
                 new_error = tables.Error("main method not defined", ctx.start.line, ctx.start.column)
                 self.ERRORS.append(new_error)
+
+        if "main" in contador:
+            contador = []
+            if "bloc" in dir(self.total_scopes["main"].expr): 
+                for corredor in self.total_scopes["main"].expr.bloc:
+                    if "expr" in dir(corredor) and "expr1" in dir(corredor) and "expr2" in dir(corredor) and "name" in dir(corredor) and "type" in dir(corredor):
+                        contador.append(corredor.name)
+                if "main" not in contador:
+                    new_error = tables.Error("No se encuentra (new Main).main(); en main", ctx.start.line, ctx.start.column)
+                    self.ERRORS.append(new_error)
+            else:
+                new_error = tables.Error("No se encuentra { } en main", ctx.start.line, ctx.start.column)
+                self.ERRORS.append(new_error)
+
+        for scopeClass in self.clases:
+            n = buscar_n_elemento(self.total_scopes, scopeClass.name)
+            if n > 1:
+                new_error = tables.Error("Hay clases repetidas", ctx.start.line, ctx.start.column)
+                self.ERRORS.append(new_error)
+
+        for scopeMetodo in self.metodos:
+            n = buscar_n_elemento(self.total_scopes, scopeMetodo.name)
+            if n > 1:
+                new_error = tables.Error("Hay metodos repetidos", ctx.start.line, ctx.start.column)
+                self.ERRORS.append(new_error)
+
+
         printidor(self.clases,self.metodos,self.ownmethod,self.property,self.formal,self.assignment,self.methodcall,self.ifCount,self.equal,self.lessequal,self.lessthan,self.minus,self.add,self.division,self.multiply,self.whileCount,self.declaration,self.letin,self.void,self.negative,self.boolnot,self.case,self.new,self.string,self.valor,self.block,self.id,self.parentheses,self.fals,self.integer,self.truet,self.instr,self.outstring,self.outint)
 
         return 0
@@ -129,9 +156,24 @@ class MyYAPLVisitor(YAPLVisitor):
         for f in ctx.feature():
             feature = self.visit(f)
             features.append(feature)
-        
+
+        for met in self.clases:
+            if class_name == met.name:
+                new_error = tables.Error("Ya se ha declarado esta clase " + str(class_name), ctx.start.line, ctx.start.column)
+                self.ERRORS.append(new_error)
+
         clase = lista.Clase(class_name,parent,self.class_ids,features)
         self.clases.append(clase)
+
+        if ctx.INHERITS():
+            if class_name == "Main":
+                if parent != "IO":
+                    new_error = tables.Error("La clase Main no puede heredar de ninguna otra clase ", ctx.start.line, ctx.start.column)
+                    self.ERRORS.append(new_error)
+            if class_name == parent:
+                    new_error = tables.Error("La clase no puede heredar de la misma clase ", ctx.start.line, ctx.start.column)
+                    self.ERRORS.append(new_error)
+
         return clase
 
 
@@ -157,6 +199,15 @@ class MyYAPLVisitor(YAPLVisitor):
 
         metodo = lista.Method(name,self.method_ids,type,formalParams,expr)
         self.metodos.append(metodo)
+
+        if name == "main":
+            if ctx.formal():
+                new_error = tables.Error("El metodo main no puede contener parametros formales ", ctx.start.line, ctx.start.column)
+                self.ERRORS.append(new_error)              
+
+        if name == type or type == None:
+            new_error = tables.Error("No se puede encontrar type en metodo ", ctx.start.line, ctx.start.column)
+            self.ERRORS.append(new_error)
 
         return metodo
 
@@ -268,6 +319,10 @@ class MyYAPLVisitor(YAPLVisitor):
         expWhile = self.visit(ctx.expression(0))
         expLoop = self.visit(ctx.expression(1))
 
+        if type(expWhile).__name__ == "Add" or type(expWhile).__name__ == "Division" or type(expWhile).__name__ == "Multiply" or type(expWhile).__name__ == "Minus":
+            new_error = tables.Error("While tiene que ser booleano", ctx.start.line, ctx.start.column)
+            self.ERRORS.append(new_error)
+
         whileCount = lista.WhileCount(expWhile,expLoop)
         self.whileCount.append(whileCount)
 
@@ -357,6 +412,10 @@ class MyYAPLVisitor(YAPLVisitor):
         exprThen = self.visit(ctx.expression(1))
         exprElse = self.visit(ctx.expression(2))
 
+        if type(exprIf).__name__ == "Add" or type(exprIf).__name__ == "Division" or type(exprIf).__name__ == "Multiply" or type(exprIf).__name__ == "Minus":
+            new_error = tables.Error("If tiene que ser booleano", ctx.start.line, ctx.start.column)
+            self.ERRORS.append(new_error)
+            
         ifcount = lista.IfCount(exprIf,exprThen,exprElse)
         self.ifCount.append(ifcount)
 
@@ -422,6 +481,19 @@ class MyYAPLVisitor(YAPLVisitor):
     def visitAdd(self, ctx):
         Le = self.visit(ctx.expression(0))
         Ri = self.visit(ctx.expression(1))
+
+        # print(type(Le).__name__)
+        # print(type(Ri).__name__)
+
+        # if type(Le).__name__ == "Id":
+        #     print("awebo perro")
+        # if type(Ri).__name__ == "Id":
+        #     print("awebo perro")
+
+        # if type(Le).__name__ == "Int":
+        #     print("awebo perro")
+        # if type(Ri).__name__ == "Int":
+        #     print("awebo perro")
 
         add = lista.Add(Le,Ri)
         self.add.append(add)

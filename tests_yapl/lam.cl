@@ -468,6 +468,7 @@ class Main inherits Term {
                                    k()), s()), i()), k()), i()));
       gen_code(app(app(i(), app(k(), s())), app(k(), app(s(), s()))));
       0;
+      (new Main).main();
     }
   };
 };

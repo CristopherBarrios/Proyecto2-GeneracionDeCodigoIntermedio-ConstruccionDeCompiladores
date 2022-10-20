@@ -359,6 +359,7 @@ class Main inherits Parse {
       {
 	 g.print_V();
          g.print_E();
+      (new Main).main();
       }
    };
 

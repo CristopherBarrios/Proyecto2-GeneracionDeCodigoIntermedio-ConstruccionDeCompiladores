@@ -20,6 +20,7 @@ class Main inherits IO {
 	    then out_string("that was a palindrome\n")
 	    else out_string("that was not a palindrome\n")
 	    fi;
+		(new Main).main();
 	}
     };
 };

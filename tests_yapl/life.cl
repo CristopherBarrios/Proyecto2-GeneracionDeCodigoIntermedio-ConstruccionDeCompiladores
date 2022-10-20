@@ -421,6 +421,9 @@ class Main inherits CellularAutomaton {
             }
             pool;
 	    self;
-      }  ) ); }
+	
+      }  ) ); 
+	  (new Main).main();
+	  }
     };
 };

@@ -422,6 +422,7 @@ class Main inherits IO {
                   fi fi fi fi fi fi fi fi fi fi;
             }
          pool;
+         (new Main).main();
        }
    };
 

@@ -22,6 +22,15 @@ def idTexto(id,stri,striLoop,valor,list_valus):
 
     return striLoop
 
+
+def buscar_n_elemento(lista, e):
+   contador=0
+   for i in lista:
+      if i == e:
+         contador+=1
+   return contador
+
+
 def printidor(clases,metodos,ownmethod,property,formal,assignment,methodcall,ifcount,equal,lessequal,lessthan,minus,add,division,multiply,whileCount,declaration,letin,void,negative,boolnot,case,new,string,valor,block,id,parentheses,fals,integer,truet,instr,outstring,outint):
         print("\n\nCLASES:\n")
         for impClase in clases:

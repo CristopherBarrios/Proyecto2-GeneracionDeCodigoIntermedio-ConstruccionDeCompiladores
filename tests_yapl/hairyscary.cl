@@ -57,6 +57,6 @@ class Main {
   c : Razz <- new Razz;
   d : Bar <- new Bar;
 
-  main(): String { "do nothing" };
+  main(): String {{ "do nothing" (new Main).main();}};
 
 };
